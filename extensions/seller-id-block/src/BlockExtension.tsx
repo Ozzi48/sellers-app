@@ -14,7 +14,7 @@ export default reactExtension("admin.product-details.block.render", () => (
 function App() {
   const [selected, setSelected] = useState("");
   const options = [
-    { label: "Alice (alice@example.com)", value: "seller_1" },
+    { label: "Alice Ok(alice@example.com)", value: "seller_1" },
     { label: "Bob (bob@example.com)", value: "seller_2" },
     { label: "Charlie (charlie@example.com)", value: "seller_3" },
   ];

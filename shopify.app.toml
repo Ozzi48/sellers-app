@@ -3,7 +3,7 @@
 client_id = "0f69bb5588c9f7840e1e5563a99342ed"
 name = "sellers-app"
 handle = "sellers-app"
-application_url = "https://frequently-minolta-infection-finds.trycloudflare.com"
+application_url = "https://sellers-app.vercel.app"
 embedded = true
 
 [build]
@@ -27,9 +27,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://frequently-minolta-infection-finds.trycloudflare.com/auth/callback",
-  "https://frequently-minolta-infection-finds.trycloudflare.com/auth/shopify/callback",
-  "https://frequently-minolta-infection-finds.trycloudflare.com/api/auth/callback"
+  "https://sellers-app.vercel.app/auth/callback",
+  "https://sellers-app.vercel.app/auth/shopify/callback",
+  "https://sellers-app.vercel.app/api/auth/callback"
 ]
 
 [pos]
