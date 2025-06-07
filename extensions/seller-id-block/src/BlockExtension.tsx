@@ -27,7 +27,7 @@ function App() {
   return (
     <AdminBlock title="Assign Seller">
       <BlockStack>
-        <Text>Select a seller:</Text>
+        <Text>OOOOOOK Select a seller:</Text>
         <Select
           label="Seller"
           options={options}
