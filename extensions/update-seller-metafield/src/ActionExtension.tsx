@@ -25,6 +25,7 @@ function App() {
   ];
 
   const handleSave = async () => {
+    console.log(selected);
     if (!selected[0]) return;
 
     setSaving(true);
@@ -87,9 +88,10 @@ function App() {
           name="seller_id"
           choices={sellers}
           value={selected ? [selected] : []}
-          onChange={(value) =>
-            setSelected(Array.isArray(value) ? value[0] : value)
-          }
+          onChange={(value) => {
+            console.log(value);
+            setSelected(Array.isArray(value) ? value[0] : value);
+          }}
         />
       </BlockStack>
     </AdminAction>
