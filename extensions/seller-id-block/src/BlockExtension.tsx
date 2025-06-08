@@ -34,13 +34,6 @@ function App() {
           value={selected}
           onChange={handleChange}
         />
-
-        {/* This hidden input makes Shopify Admin save the value */}
-        <input
-          type="hidden"
-          name="metafields[custom.seller_id]"
-          value={selected}
-        />
       </BlockStack>
     </AdminBlock>
   );
