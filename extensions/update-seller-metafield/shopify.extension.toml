@@ -12,6 +12,10 @@ type = "ui_extension"
 module = "./src/ActionExtension.tsx"
 target = "admin.product-details.action.render"
 
+[[extension.capabilities.api_access]]
+version = "2024-04"
+fields = ["metafields(namespace: \"custom\")"]
+
 
 # Valid extension targets:
 

@@ -4,10 +4,10 @@ import {
   AdminAction,
   BlockStack,
   Button,
-  ChoiceList,
   Text,
+  Select,
 } from "@shopify/ui-extensions-react/admin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TARGET = "admin.product-details.action.render";
 
@@ -24,10 +24,47 @@ function App() {
     { label: "Charlie (charlie@example.com)", value: "seller_3" },
   ];
 
-  const handleSave = async () => {
-    console.log(selected);
-    if (!selected[0]) return;
+  useEffect(() => {
+    const productId = data.selected[0].id;
 
+    const query = {
+      query: `
+        query GetMetafields($id: ID!) {
+          product(id: $id) {
+            metafields(first: 10, namespace: "custom") {
+              edges {
+                node {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: { id: productId },
+    };
+
+    (async () => {
+      const res = await fetch("shopify:admin/api/graphql.json", {
+        method: "POST",
+        body: JSON.stringify(query),
+      });
+
+      const json = await res.json();
+
+      const sellerMetafield = json?.data?.product?.metafields?.edges?.find(
+        (edge: any) => edge.node.key === "seller_id",
+      );
+
+      if (sellerMetafield?.node?.value) {
+        setSelected(sellerMetafield.node.value);
+      }
+    })();
+  }, [data]);
+
+  const handleSave = async () => {
+    if (!selected) return;
     setSaving(true);
 
     const mutation = {
@@ -51,7 +88,7 @@ function App() {
           {
             namespace: "custom",
             key: "seller_id",
-            value: selected[0],
+            value: selected,
             type: "single_line_text_field",
             ownerId: data.selected[0].id,
           },
@@ -64,13 +101,12 @@ function App() {
       body: JSON.stringify(mutation),
     });
 
+    setSaving(false);
     if (res.ok) {
       close();
     } else {
       console.error("Metafield save failed");
     }
-
-    setSaving(false);
   };
 
   return (
@@ -84,14 +120,11 @@ function App() {
     >
       <BlockStack>
         <Text>Select seller to assign:</Text>
-        <ChoiceList
-          name="seller_id"
-          choices={sellers}
-          value={selected ? [selected] : []}
-          onChange={(value) => {
-            console.log(value);
-            setSelected(Array.isArray(value) ? value[0] : value);
-          }}
+        <Select
+          label="Seller"
+          options={sellers}
+          value={selected}
+          onChange={(value) => setSelected(value)}
         />
       </BlockStack>
     </AdminAction>
