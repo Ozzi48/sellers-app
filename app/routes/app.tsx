@@ -1,3 +1,4 @@
+// app/routes/app.tsx
 import type { HeadersFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { Link, Outlet, useLoaderData, useRouteError } from "@remix-run/react";
 import { boundary } from "@shopify/shopify-app-remix/server";
@@ -25,6 +26,7 @@ export default function App() {
           Home
         </Link>
         <Link to="/app/additional">Additional page</Link>
+        <Link to="/app/applications">Seller Applications</Link>
       </NavMenu>
       <Outlet />
     </AppProvider>

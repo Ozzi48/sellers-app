@@ -14,41 +14,76 @@ const TARGET = "admin.product-details.action.render";
 export default reactExtension(TARGET, () => <App />);
 
 function App() {
-  const { close, data } = useApi(TARGET);
+  const { close, data, extension } = useApi(TARGET);
   const [selected, setSelected] = useState<string | undefined>();
   const [saving, setSaving] = useState(false);
-
-  const sellers = [
-    { label: "Alice (alice@example.com)", value: "seller_1" },
-    { label: "Bob (bob@example.com)", value: "seller_2" },
-    { label: "Charlie (charlie@example.com)", value: "seller_3" },
-  ];
+  const [sellers, setSellers] = useState<{ label: string; value: string }[]>(
+    [],
+  );
 
   useEffect(() => {
     const productId = data.selected[0].id;
 
-    const query = {
-      query: `
-        query GetMetafields($id: ID!) {
-          product(id: $id) {
-            metafields(first: 10, namespace: "custom") {
-              edges {
-                node {
-                  key
-                  value
+    const fetchData = async () => {
+      const resShop = await fetch("shopify:admin/api/graphql.json", {
+        method: "POST",
+        body: JSON.stringify({
+          query: `
+            query GetShopInfo {
+              shop {
+                name
+                myshopifyDomain
+                primaryDomain {
+                  host
+                  sslEnabled
+                  url
+                }
+              }
+            }
+          `,
+        }),
+      });
+
+      const jsonShop = await resShop.json();
+
+      // const prodUrl =
+      //   jsonShop.data.shop.primaryDomain.url + "/api/admin/sellers";
+      const devUrl = "https://dev.thriftys.online/api/admin/sellers";
+      const sellersRes = await fetch(devUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const sellerJson = await sellersRes.json();
+
+      const sellerOptions = sellerJson.map((s: any) => ({
+        label: s.stripeId ? `${s.label} (Stripe: ${s.stripeId})` : s.label,
+        value: s.value,
+      }));
+      setSellers(sellerOptions || []);
+
+      const metafieldQuery = {
+        query: `
+          query GetMetafields($id: ID!) {
+            product(id: $id) {
+              metafields(first: 250, namespace: "custom") {
+                edges {
+                  node {
+                    key
+                    value
+                  }
                 }
               }
             }
           }
-        }
-      `,
-      variables: { id: productId },
-    };
+        `,
+        variables: { id: productId },
+      };
 
-    (async () => {
       const res = await fetch("shopify:admin/api/graphql.json", {
         method: "POST",
-        body: JSON.stringify(query),
+        body: JSON.stringify(metafieldQuery),
       });
 
       const json = await res.json();
@@ -60,7 +95,9 @@ function App() {
       if (sellerMetafield?.node?.value) {
         setSelected(sellerMetafield.node.value);
       }
-    })();
+    };
+
+    fetchData();
   }, [data]);
 
   const handleSave = async () => {
@@ -108,6 +145,8 @@ function App() {
       console.error("Metafield save failed");
     }
   };
+
+  console.log("Last: ", sellers, selected);
 
   return (
     <AdminAction

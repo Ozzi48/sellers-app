@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
+import { redirect, useFetcher } from "@remix-run/react";
 import {
   Page,
   Layout,
@@ -16,10 +16,8 @@ import {
 import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticate.admin(request);
-
-  return null;
+export const loader = async () => {
+  return redirect("/app/applications");
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
