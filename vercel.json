@@ -1,8 +1,0 @@
-{
-  "builds": [
-    {
-      "src": "remix.config.js",
-      "use": "@vercel/remix"
-    }
-  ]
-}
