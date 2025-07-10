@@ -25,6 +25,14 @@ const shopify = shopifyApp({
     : {}),
 });
 
+console.log(
+  process.env.SHOPIFY_API_KEY,
+  process.env.SHOPIFY_API_SECRET,
+  process.env.SHOPIFY_APP_URL,
+  process.env.SCOPES,
+  process.env.SHOP_CUSTOM_DOMAIN,
+);
+
 export default shopify;
 export const apiVersion = ApiVersion.January25;
 export const addDocumentResponseHeaders = shopify.addDocumentResponseHeaders;
