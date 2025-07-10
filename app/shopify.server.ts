@@ -37,6 +37,13 @@ export default shopify;
 export const apiVersion = ApiVersion.January25;
 export const addDocumentResponseHeaders = shopify.addDocumentResponseHeaders;
 export const authenticate = shopify.authenticate;
+export const test = {
+  test1: process.env.SHOPIFY_API_KEY,
+  test2: process.env.SHOPIFY_API_SECRET,
+  test3: process.env.SHOPIFY_APP_URL,
+  test4: process.env.SCOPES,
+  test5: process.env.SHOP_CUSTOM_DOMAIN,
+};
 export const unauthenticated = shopify.unauthenticated;
 export const registerWebhooks = shopify.registerWebhooks;
 export const sessionStorage = shopify.sessionStorage;
