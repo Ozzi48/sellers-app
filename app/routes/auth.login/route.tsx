@@ -3,15 +3,6 @@ import { Page, Text } from "@shopify/polaris";
 import { authenticate } from "../../shopify.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  console.log("authenticate keys:", Object.keys(authenticate));
-  console.log("request:", request);
-  try {
-    const { session } = await authenticate.admin(request);
-    return json({ ok: true });
-  } catch (error) {
-    console.error("AUTH ERROR:", error);
-    throw new Response("Auth failed", { status: 500 });
-  }
   return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };
 
