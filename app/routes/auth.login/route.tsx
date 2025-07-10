@@ -1,8 +1,8 @@
-import { redirect } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { Page, Text } from "@shopify/polaris";
 
 export const loader = async () => {
-  return redirect("/app");
+  return json({});
 };
 
 export default function Auth() {
