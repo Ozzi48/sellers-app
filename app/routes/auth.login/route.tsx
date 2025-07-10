@@ -1,10 +1,17 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { Page, Text } from "@shopify/polaris";
-import { authenticate, test } from "../../shopify.server";
+import { authenticate } from "../../shopify.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // const { session } = await authenticate.admin(request);
-  console.log("Authenticated session for:", test);
+  console.log("authenticate keys:", Object.keys(authenticate));
+  console.log("request:", request);
+  try {
+    const { session } = await authenticate.admin(request);
+    return json({ ok: true });
+  } catch (error) {
+    console.error("AUTH ERROR:", error);
+    throw new Response("Auth failed", { status: 500 });
+  }
   return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };
 
