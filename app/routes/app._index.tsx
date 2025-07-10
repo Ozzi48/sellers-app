@@ -17,7 +17,7 @@ import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 
 export const loader = async () => {
-  return redirect("/app/applications");
+  return redirect("/app");
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
