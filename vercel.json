@@ -1,3 +1,8 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/entrypoint" }]
+  "builds": [
+    {
+      "src": "remix.config.js",
+      "use": "@vercel/remix"
+    }
+  ]
 }
